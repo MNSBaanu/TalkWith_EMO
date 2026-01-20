@@ -156,91 +156,126 @@ const Chatbot = () => {
               </motion.div>
             </motion.div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
-              >
-                <div className={`flex items-start space-x-2 max-w-[80%] ${
-                  message.isBot ? 'flex-row' : 'flex-row-reverse space-x-reverse'
-                }`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.isBot 
-                      ? 'bg-gradient-to-r from-blue-500 to-slate-600' 
-                      : 'bg-gradient-to-r from-slate-600 to-blue-500'
-                  }`}>
-                    {message.isBot ? (
-                      <Bot className="h-4 w-4 text-white" />
-                    ) : (
-                      <User className="h-4 w-4 text-white" />
-                    )}
-                  </div>
-                  <div className={`rounded-2xl p-3 ${
-                    message.isBot
-                      ? 'bg-slate-800/70 text-slate-100'
-                      : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
-                  }`}>
-                    <p className="text-sm leading-relaxed">{message.text}</p>
-                    <p className={`text-xs mt-1 ${
-                      message.isBot ? 'text-slate-400' : 'text-blue-100'
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50">
+              <AnimatePresence>
+                {messages.map((message) => (
+                  <motion.div
+                    key={message.id}
+                    className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
+                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  >
+                    <div className={`flex items-start space-x-2 max-w-[80%] ${
+                      message.isBot ? 'flex-row' : 'flex-row-reverse space-x-reverse'
                     }`}>
-                      {message.timestamp.toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {/* Typing Indicator */}
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="flex items-start space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-slate-600 rounded-full flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-white" />
-                  </div>
-                  <div className="bg-slate-800/70 rounded-2xl p-3">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                      <motion.div 
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          message.isBot 
+                            ? 'bg-gradient-to-r from-blue-500 to-slate-600' 
+                            : 'bg-gradient-to-r from-slate-600 to-blue-500'
+                        }`}
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        {message.isBot ? (
+                          <Bot className="h-4 w-4 text-white" />
+                        ) : (
+                          <User className="h-4 w-4 text-white" />
+                        )}
+                      </motion.div>
+                      <motion.div 
+                        className={`rounded-2xl p-3 ${
+                          message.isBot
+                            ? 'bg-slate-800/70 text-slate-100'
+                            : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
+                        }`}
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <p className="text-sm leading-relaxed">{message.text}</p>
+                        <p className={`text-xs mt-1 ${
+                          message.isBot ? 'text-slate-400' : 'text-blue-100'
+                        }`}>
+                          {message.timestamp.toLocaleTimeString([], { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}
+                        </p>
+                      </motion.div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-          {/* Input */}
-          <div className="p-4 border-t border-blue-500/30 bg-slate-900/70">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Share your dreams with me..."
-                className="flex-1 px-4 py-3 rounded-full bg-slate-800/50 border border-blue-500/30 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors text-sm"
-              />
-              <button
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim()}
-                className="p-3 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full hover:from-blue-500 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-glow"
-              >
-                <Send className="h-4 w-4 text-white" />
-              </button>
+              {/* Typing Indicator */}
+              <AnimatePresence>
+                {isTyping && (
+                  <motion.div 
+                    className="flex justify-start"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="flex items-start space-x-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-slate-600 rounded-full flex items-center justify-center">
+                        <Bot className="h-4 w-4 text-white" />
+                      </div>
+                      <div className="bg-slate-800/70 rounded-2xl p-3">
+                        <div className="flex space-x-1">
+                          {[0, 1, 2].map((i) => (
+                            <motion.div
+                              key={i}
+                              className="w-2 h-2 bg-slate-400 rounded-full"
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{
+                                duration: 0.6,
+                                repeat: Infinity,
+                                delay: i * 0.1
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <div ref={messagesEndRef} />
             </div>
-            <p className="text-xs text-slate-400 mt-2 text-center">
-              Press Enter to send • Powered by Dream AI
-            </p>
-          </div>
-        </div>
-      )}
+
+            {/* Input */}
+            <div className="p-4 border-t border-blue-500/30 bg-slate-900/70">
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Share your dreams with me..."
+                  className="flex-1 px-4 py-3 rounded-full bg-slate-800/50 border border-blue-500/30 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors text-sm"
+                />
+                <motion.button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim()}
+                  className="p-3 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full hover:from-blue-500 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-glow"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  <Send className="h-4 w-4 text-white" />
+                </motion.button>
+              </div>
+              <p className="text-xs text-slate-400 mt-2 text-center">
+                Press Enter to send • Powered by Dream AI
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

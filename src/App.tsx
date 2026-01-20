@@ -8,7 +8,7 @@ import ParticleBackground from './components/ParticleBackground'
 import Chatbot from './components/Chatbot'
 import PortalEntry from './components/PortalEntry'
 import DreamDNA from './components/DreamDNA'
-import QuantumDreams from './components/QuantumDreams'
+import DreamAvatar from './components/DreamAvatar'
 
 function App() {
   const [showPortal, setShowPortal] = useState(true)
@@ -46,7 +46,7 @@ function App() {
               <>
                 <Hero />
                 <DreamDNA />
-                <QuantumDreams />
+                <DreamAvatar />
                 <Features />
               </>
             } />

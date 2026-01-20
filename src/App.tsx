@@ -7,6 +7,8 @@ import Footer from './components/Footer'
 import ParticleBackground from './components/ParticleBackground'
 import Chatbot from './components/Chatbot'
 import PortalEntry from './components/PortalEntry'
+import DreamDNA from './components/DreamDNA'
+import QuantumDreams from './components/QuantumDreams'
 
 function App() {
   const [showPortal, setShowPortal] = useState(true)
@@ -43,6 +45,8 @@ function App() {
             <Route path="/" element={
               <>
                 <Hero />
+                <DreamDNA />
+                <QuantumDreams />
                 <Features />
               </>
             } />

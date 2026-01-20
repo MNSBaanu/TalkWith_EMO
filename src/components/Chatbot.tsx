@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Message {
   id: string
@@ -80,37 +81,80 @@ const Chatbot = () => {
   return (
     <>
       {/* Chat Toggle Button */}
-      <button
+      <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full transition-all duration-300 shadow-glow-lg ${
-          isOpen 
-            ? 'bg-gradient-to-r from-slate-700 to-blue-600 rotate-180' 
-            : 'bg-gradient-to-r from-blue-600 to-slate-700 hover:scale-110'
-        }`}
+        className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gradient-to-r from-blue-600 to-slate-700 shadow-glow-lg"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        animate={{ 
+          rotate: isOpen ? 180 : 0,
+          backgroundColor: isOpen ? "#475569" : "#3b82f6"
+        }}
+        transition={{ type: "spring", stiffness: 300 }}
       >
-        {isOpen ? (
-          <X className="h-6 w-6 text-white" />
-        ) : (
-          <MessageCircle className="h-6 w-6 text-white" />
-        )}
-      </button>
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.div
+              key="close"
+              initial={{ rotate: -180, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 180, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X className="h-6 w-6 text-white" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="open"
+              initial={{ rotate: 180, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -180, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <MessageCircle className="h-6 w-6 text-white" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
 
       {/* Chat Window */}
-      {isOpen && (
-        <div className="fixed bottom-24 right-6 w-96 h-[500px] glass rounded-2xl border border-blue-500/30 z-50 flex flex-col overflow-hidden animate-fadeInUp">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-slate-700 to-blue-600 p-4 flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-slate-400 rounded-full flex items-center justify-center">
-              <Bot className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-white font-semibold">DreamBot</h3>
-              <p className="text-slate-200 text-sm">Your Dream Companion</p>
-            </div>
-            <div className="ml-auto">
-              <Sparkles className="h-5 w-5 text-blue-300 animate-pulse" />
-            </div>
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="fixed bottom-24 right-6 w-96 h-[500px] glass rounded-2xl border border-blue-500/30 z-50 flex flex-col overflow-hidden"
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {/* Header */}
+            <motion.div 
+              className="bg-gradient-to-r from-slate-700 to-blue-600 p-4 flex items-center space-x-3"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <motion.div 
+                className="w-10 h-10 bg-gradient-to-r from-blue-400 to-slate-400 rounded-full flex items-center justify-center"
+                animate={{ 
+                  boxShadow: ["0 0 0 0 rgba(59, 130, 246, 0.4)", "0 0 0 10px rgba(59, 130, 246, 0)", "0 0 0 0 rgba(59, 130, 246, 0)"]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Bot className="h-6 w-6 text-white" />
+              </motion.div>
+              <div>
+                <h3 className="text-white font-semibold">DreamBot</h3>
+                <p className="text-slate-200 text-sm">Your Dream Companion</p>
+              </div>
+              <motion.div 
+                className="ml-auto"
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <Sparkles className="h-5 w-5 text-blue-300" />
+              </motion.div>
+            </motion.div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50">

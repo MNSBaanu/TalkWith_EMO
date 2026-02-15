@@ -1,8 +1,7 @@
-Imposter
+# Imposter
 
----
 
-# 🎮 Word Imposter — Real-Time Multiplayer Party Game
+## 🎮 Word Imposter — Real-Time Multiplayer Party Game
 
 Word Imposter is a real-time multiplayer social deduction game where players receive secret roles and must identify the imposter through discussion, observation, and strategy.
 

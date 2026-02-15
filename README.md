@@ -1,4 +1,4 @@
-# Imposter
+Imposter
 
 ---
 

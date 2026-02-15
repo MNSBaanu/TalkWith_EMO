@@ -1,5 +1,4 @@
-# Imposter
-
+#Imposter
 
 ## 🎮 Word Imposter — Real-Time Multiplayer Party Game
 

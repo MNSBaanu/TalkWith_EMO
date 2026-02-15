@@ -1,113 +1,196 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Plus, Play, Info, Shield, Zap } from 'lucide-react';
+import { Users, Plus, Play, Info, Shield, Zap, Target, HelpCircle } from 'lucide-react';
 
 const App = () => {
   const [roomCode, setRoomCode] = useState('');
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/20 rounded-full blur-[100px] animate-pulse-slow" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-secondary/20 rounded-full blur-[100px] animate-pulse-slow" />
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-background-dark">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] animate-pulse-slow" />
+      <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] bg-accent/10 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }} />
 
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="w-full max-w-lg z-10"
-      >
-        {/* Logo/Title Section */}
-        <div className="text-center mb-12">
+      {/* Floating Sparkles/Particles (Pure CSS) */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(6)].map((_, i) => (
           <motion.div
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-            className="inline-block p-4 bg-white/5 rounded-3xl mb-6 glass-morphism border border-white/10"
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full opacity-20"
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: Math.random() * 100 + "%",
+              scale: 0
+            }}
+            animate={{
+              y: [null, "-100%"],
+              opacity: [0.2, 0.5, 0],
+              scale: [0, 1.5, 0]
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              delay: Math.random() * 5
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Main Content Container */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-xl z-10 space-y-8"
+      >
+        {/* Hero Section */}
+        <div className="text-center space-y-4">
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-md mb-4"
           >
-            <Shield className="w-16 h-16 text-primary" />
+            <Zap className="w-4 h-4 text-accent fill-accent/20" />
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/50">Next Gen Social Game</span>
           </motion.div>
-          <h1 className="text-6xl font-black mb-4 tracking-tighter">
-            WORD <span className="text-gradient">IMPOSTER</span>
-          </h1>
-          <p className="text-white/60 text-lg font-medium">
-            Find the imposter before they blend in.
-          </p>
+
+          <div className="relative inline-block">
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-7xl md:text-8xl font-black tracking-tighter leading-none"
+            >
+              WORD <br />
+              <span className="text-gradient">IMPOSTER</span>
+            </motion.h1>
+            <motion.div
+              style={{ top: '15%', right: '-15%' }}
+              animate={{ rotate: [0, 10, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute hidden md:block"
+            >
+              <Target className="w-12 h-12 text-primary/40" />
+            </motion.div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-white/40 text-lg md:text-xl font-medium max-w-md mx-auto"
+          >
+            Unmask the outsider in this high-stakes game of deception and vocabulary.
+          </motion.p>
         </div>
 
-        {/* Action Cards */}
-        <div className="space-y-6">
-          {/* Join Room Section */}
+        {/* Action Center */}
+        <div className="grid gap-6">
+          {/* Join Section Card */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="glass-morphism p-8 space-y-4 border-white/10"
+            whileHover={{ y: -5 }}
+            className="glass-card p-1 pb-6 overflow-hidden group"
           >
-            <div className="flex items-center gap-3 mb-2">
-              <Users className="w-6 h-6 text-primary" />
-              <h2 className="text-xl font-bold">Join a Game</h2>
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
+
+            <div className="p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/20 rounded-lg">
+                    <Users className="w-5 h-5 text-primary" />
+                  </div>
+                  <h2 className="text-xl font-bold tracking-tight">Join Existing Room</h2>
+                </div>
+                <div className="text-[10px] font-mono text-white/20 uppercase tracking-widest">Global Servers</div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="relative group/input">
+                  <input
+                    type="text"
+                    placeholder="••••••"
+                    value={roomCode}
+                    onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                    maxLength={6}
+                    className="input-premium group-hover/input:border-primary/30"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-white/10 uppercase tracking-tighter">Room ID</div>
+                </div>
+
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
+                  className="btn-premium-primary w-full group/btn"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Play className="w-5 h-5 fill-current" />
+                    ENTER BATTLEFIELD
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover/btn:opacity-20 transition-opacity duration-500" />
+                </motion.button>
+              </div>
             </div>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Enter Room Code"
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                maxLength={6}
-                className="w-full bg-black/30 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 text-xl tracking-widest font-mono uppercase"
-              />
-            </div>
-            <button className="btn-primary w-full flex items-center justify-center gap-2">
-              <Play className="w-5 h-5 fill-current" />
-              JOIN ROOM
-            </button>
           </motion.div>
 
-          {/* Create Room Section */}
+          {/* Quick Actions */}
           <div className="grid grid-cols-2 gap-4">
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn-secondary flex items-center justify-center gap-2 py-6"
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-premium group"
             >
-              <Plus className="w-5 h-5" />
-              CREATE ROOM
+              <Plus className="w-5 h-5 text-accent transition-transform group-hover:rotate-90" />
+              <span>Host Game</span>
             </motion.button>
 
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn-secondary flex items-center justify-center gap-2 py-6"
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-premium group"
             >
-              <Info className="w-5 h-5" />
-              HOW TO PLAY
+              <HelpCircle className="w-5 h-5 text-secondary transition-bounce group-hover:scale-110" />
+              <span>Guide</span>
             </motion.button>
           </div>
         </div>
 
-        {/* Features Row */}
-        <div className="grid grid-cols-3 gap-4 mt-12 pt-8 border-t border-white/5">
-          <div className="text-center space-y-2">
-            <div className="flex justify-center"><Zap className="w-5 h-5 text-yellow-500" /></div>
-            <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Real-time</p>
+        {/* Social Credibility / Stats */}
+        <div className="flex items-center justify-center gap-8 py-4 px-8 glass-card bg-white/2 rounded-full border-white/5 mx-auto w-fit">
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-black text-white">2.4k+</span>
+            <span className="text-[9px] uppercase tracking-widest text-white/30 font-bold">Online</span>
           </div>
-          <div className="text-center space-y-2">
-            <div className="flex justify-center"><Users className="w-5 h-5 text-blue-500" /></div>
-            <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Multiplayer</p>
+          <div className="w-[1px] h-8 bg-white/10" />
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-black text-white">120k</span>
+            <span className="text-[9px] uppercase tracking-widest text-white/30 font-bold">Games</span>
           </div>
-          <div className="text-center space-y-2">
-            <div className="flex justify-center"><Shield className="w-5 h-5 text-red-500" /></div>
-            <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Secure</p>
+          <div className="w-[1px] h-8 bg-white/10" />
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-black text-white">4.9</span>
+            <span className="text-[9px] uppercase tracking-widest text-white/30 font-bold">Rating</span>
           </div>
         </div>
       </motion.div>
 
-      {/* Footer Decoration */}
-      <div className="absolute bottom-6 text-white/20 text-xs font-mono tracking-widest uppercase">
-        v1.0.0 — Build with Precision
+      {/* Decorative Elements */}
+      <div className="absolute top-10 left-10 opacity-10 pointer-events-none">
+        <Shield className="w-32 h-32 text-white animate-float" />
+      </div>
+      <div className="absolute bottom-20 right-10 opacity-10 pointer-events-none">
+        <Target className="w-40 h-40 text-white animate-float" style={{ animationDelay: '2s' }} />
+      </div>
+
+      {/* Footer */}
+      <div className="absolute bottom-6 left-0 right-0 flex justify-center items-center gap-4 text-white/10 text-[10px] font-mono tracking-[0.3em] uppercase">
+        <div className="h-[1px] w-12 bg-white/5" />
+        ENCRYPTED SESSION ID: 0x8F2...A9
+        <div className="h-[1px] w-12 bg-white/5" />
       </div>
     </div>
   );
 };
 
 export default App;
+

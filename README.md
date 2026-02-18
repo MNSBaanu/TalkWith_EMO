@@ -1,6 +1,6 @@
 # Imposter
 
-## 🎮 Word Imposter — Real-Time Multiplayer Party Game
+## 🎮 Word Imposter — Multiplayer Game
 
 Word Imposter is a real-time multiplayer social deduction game where players receive secret roles and must identify the imposter through discussion, observation, and strategy.
 
@@ -92,15 +92,4 @@ The application follows a **room-based multiplayer architecture**.
 The server controls all game logic to ensure fairness and prevent cheating.  
 Each player receives only their own role information.
 
----
 
-## 🔄 Real-Time Communication
-
-Socket.IO enables live synchronization between players:
-
-- Player join / leave
-- Lobby updates
-- Role assignment
-- Timer synchronization
-- Voting updates
-- Round transitions

@@ -54,11 +54,12 @@ export default function EmotionSection({ emotion, index }: Props) {
         <div className="w-full px-8 sm:px-16 lg:px-24 py-28 max-w-3xl">
 
           {/* Faint index number */}
-          <span ref={numRef} className="block font-black select-none leading-none"
+          <span ref={numRef} className="block select-none leading-none"
             style={{
               fontSize: 'clamp(56px, 10vw, 120px)',
               color: emotion.primary, opacity: 0.08,
               marginLeft: '-0.04em', lineHeight: 1,
+              fontFamily: "'Playfair Display', serif", fontWeight: 800,
             }}>
             {String(index + 1).padStart(2, '0')}
           </span>
@@ -70,20 +71,20 @@ export default function EmotionSection({ emotion, index }: Props) {
           }} />
 
           {/* Title */}
-          <h2 ref={titleRef} className="font-black leading-none tracking-tight"
-            style={{ fontSize: 'clamp(40px, 6vw, 80px)', color: emotion.dark, marginBottom: 16 }}>
+          <h2 ref={titleRef} className="leading-none tracking-tight"
+            style={{ fontSize: 'clamp(40px, 6vw, 80px)', color: emotion.dark, marginBottom: 16, fontFamily: "'Playfair Display', serif", fontWeight: 800 }}>
             {emotion.name}
           </h2>
 
           {/* Subtitle */}
           <p ref={subRef} className="font-semibold tracking-widest uppercase mb-6"
-            style={{ fontSize: 'clamp(10px, 1.1vw, 12px)', color: emotion.mid, letterSpacing: '0.22em' }}>
+            style={{ fontSize: 'clamp(10px, 1.1vw, 12px)', color: emotion.mid, letterSpacing: '0.22em', fontFamily: "'Inter', sans-serif" }}>
             {emotion.subtitle}
           </p>
 
           {/* Quote */}
-          <p ref={quoteRef} className="font-light italic leading-relaxed mb-10"
-            style={{ fontSize: 'clamp(14px, 1.4vw, 18px)', color: emotion.mid, opacity: 0.8, maxWidth: 480 }}>
+          <p ref={quoteRef} className="leading-relaxed mb-10"
+            style={{ fontSize: 'clamp(14px, 1.4vw, 18px)', color: emotion.mid, opacity: 0.8, maxWidth: 480, fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 400 }}>
             "{emotion.quote}"
           </p>
 
@@ -91,8 +92,8 @@ export default function EmotionSection({ emotion, index }: Props) {
           <button
             ref={btnRef}
             onClick={() => setChatOpen(true)}
-            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 hover:opacity-90 active:scale-95"
-            style={{ background: emotion.primary, color: '#fff' }}
+            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-xl text-sm tracking-wide transition-all duration-200 hover:opacity-90 active:scale-95"
+            style={{ background: emotion.primary, color: '#fff', fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             Talk to {emotion.name} EMO
             <span style={{ fontSize: 16, opacity: 0.8 }}>→</span>

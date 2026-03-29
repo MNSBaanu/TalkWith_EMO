@@ -37,16 +37,16 @@ export default function HeroSection() {
 
         <h1
           ref={headlineRef}
-          className="font-black tracking-tight leading-none mb-5"
-          style={{ fontSize: 'clamp(44px, 8vw, 96px)', color: '#0F172A' }}
+          className="tracking-tight leading-tight mb-5"
+          style={{ fontSize: 'clamp(44px, 8vw, 96px)', color: '#0F172A', fontFamily: "'Playfair Display', serif", fontWeight: 800 }}
         >
           Talk With <span style={{ color: '#D97706' }}>EMO</span>
         </h1>
 
         <p
           ref={subRef}
-          className="font-light leading-relaxed mb-10"
-          style={{ fontSize: 'clamp(15px, 1.6vw, 19px)', color: '#64748B', maxWidth: 440, margin: '0 auto 40px' }}
+          className="leading-relaxed mb-10"
+          style={{ fontSize: 'clamp(15px, 1.6vw, 19px)', color: '#64748B', maxWidth: 440, margin: '0 auto 40px', fontFamily: "'Inter', sans-serif", fontWeight: 300 }}
         >
           Express yourself to an emotion that truly understands.
           Scroll down and open a conversation with Joy, Sadness, Anger, Fear, or Disgust.

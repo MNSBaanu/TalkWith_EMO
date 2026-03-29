@@ -30,7 +30,8 @@ export default function CinematicApp() {
         }}
       >
         {/* Brand */}
-        <span className="font-black text-slate-900 text-sm tracking-tight">
+        <span className="text-slate-900 text-base tracking-tight"
+          style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
           Talk With EMO
         </span>
 
@@ -48,7 +49,8 @@ export default function CinematicApp() {
           ))}
         </nav>
 
-        <span className="text-xs font-medium tracking-[0.2em] uppercase text-slate-400">
+        <span className="text-xs font-medium tracking-[0.2em] uppercase text-slate-400"
+          style={{ fontFamily: "'Inter', sans-serif" }}>
           Emotional Intelligence
         </span>
       </header>

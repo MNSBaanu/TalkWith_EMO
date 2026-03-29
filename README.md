@@ -1,68 +1,66 @@
-# Escape — Cinematic Interactive Storytelling
+# Talk With EMO
 
-A scroll-based, branching narrative web experience built with React, Tailwind CSS, and GSAP.
+An emotional intelligence web platform where users identify what they are feeling and have a conversation with an EMO — a character built around that specific emotion. Each emotion has its own personality, tone, and response style.
 
-## Stack
+Built with React, TypeScript, GSAP, Tailwind CSS, and Lenis.
 
-- **React 19** + **TypeScript** — functional components, custom hooks
-- **Vite** — fast dev/build tooling
-- **Tailwind CSS v4** — utility-first styling with glassmorphism effects
-- **GSAP + ScrollTrigger** — cinematic scene transitions and parallax animations
-- **Lenis** — buttery smooth scrolling
+---
+
+## What It Does
+
+Users scroll through five emotion sections — Joy, Sadness, Anger, Fear, and Disgust. Each section presents the emotion with a quote and description. A "Talk to [Emotion] EMO" button opens a chat modal where the user can express themselves and receive responses tailored to that emotion's personality.
+
+The hero section asks "What are you feeling right now?" and presents all five emotions as CTA cards, letting users jump directly to the one that resonates.
+
+---
+
+## Tech Stack
+
+| Tool | Purpose |
+|------|---------|
+| React 19 + TypeScript | Component architecture, type safety |
+| Vite | Build tooling and dev server |
+| Tailwind CSS v4 | Utility-first styling |
+| GSAP + ScrollTrigger | Scroll-based reveal animations |
+| Lenis | Smooth scroll |
+| Playfair Display | Display / headline font |
+| Inter | UI / body font |
+| Cormorant Garamond | CTA accent font |
+
+---
 
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   ├── StoryEngine.tsx     # Root engine: Lenis + GSAP setup, renders Scene
-│   ├── Scene.tsx           # Renders a story node with animations
-│   ├── ParallaxLayer.tsx   # Mouse-driven parallax wrapper (bg/mid/fg depths)
-│   ├── ChoiceBox.tsx       # Animated choice buttons with environment glow
-│   ├── TypewriterText.tsx  # Character-by-character text reveal
-│   └── Particles.tsx       # Canvas particle system with mouse repulsion
-├── hooks/
-│   └── useStoryEngine.ts   # Story state: current node, history, navigation
+│   ├── CinematicApp.tsx      # Root layout — header, Lenis setup, section list
+│   ├── HeroSection.tsx       # Landing section with CTA emotion cards
+│   ├── EmotionSection.tsx    # Individual emotion section with scroll reveal
+│   ├── ChatModal.tsx         # Chat overlay triggered by the Talk button
+│   └── NavDots.tsx           # Fixed side navigation dots
 ├── data/
-│   └── story.json          # Branching story graph (nodes + choices)
-├── types/
-│   └── story.ts            # TypeScript interfaces for story data
+│   └── emotions.ts           # All emotion data — colors, responses, greetings
+├── hooks/
+│   └── useEmoChat.ts         # Chat state — messages, send, typing, reset
 └── main.tsx
 ```
 
-## Story Structure
+---
 
-Stories are defined as a JSON graph in `src/data/story.json`:
+## Emotion Characters
 
-```json
-{
-  "startNode": "awakening",
-  "nodes": {
-    "awakening": {
-      "id": "awakening",
-      "environment": "abstract",
-      "text": "...",
-      "choices": [
-        { "id": "next-node-id", "label": "...", "description": "...", "icon": "✦" }
-      ]
-    }
-  }
-}
-```
+Each EMO has a distinct personality reflected in its greeting, tone, and responses.
 
-Each node supports:
-- `environment` — `forest` | `space` | `cyberpunk` | `abstract` (controls colors, particles, decorations)
-- `choices` — array of branching paths
-- `isEnding` — marks terminal nodes with an ending card
+| Emotion | Personality | Color |
+|---------|-------------|-------|
+| Joy | Warm, affirming, celebratory | Amber `#D97706` |
+| Sadness | Gentle, patient, deeply empathetic | Blue `#1D4ED8` |
+| Anger | Direct, validating, no sugarcoating | Red `#B91C1C` |
+| Fear | Cautious, reassuring, grounding | Violet `#6D28D9` |
+| Disgust | Sharp, principled, high standards | Green `#15803D` |
 
-## Environments
-
-| Environment | Palette | Vibe |
-|-------------|---------|------|
-| `abstract` | Orange / Pink / Purple | Void, dreamlike |
-| `forest` | Green / Emerald | Ancient, bioluminescent |
-| `space` | Indigo / Purple | Celestial, vast |
-| `cyberpunk` | Fuchsia / Cyan | Neon, digital |
+---
 
 ## Getting Started
 
@@ -71,20 +69,41 @@ npm install
 npm run dev
 ```
 
-## Adding Story Content
+Build for production:
 
-1. Add new nodes to `src/data/story.json`
-2. Reference them in `choices[].id` of existing nodes
-3. Set `isEnding: true` on terminal nodes — no choices needed
+```bash
+npm run build
+```
 
-## Features
+---
 
-- Multi-layer mouse parallax (background / midground / foreground)
-- GSAP-powered scene enter/exit transitions (fade + zoom + slide)
-- Canvas particle system with per-environment color palettes and mouse repulsion
-- Typewriter text effect with cursor blink
-- Glassmorphism UI with per-environment glow effects
-- Story history with back navigation
-- Multiple endings system
-- Lenis smooth scroll integration
-- Fully responsive (mobile + desktop)
+## Adding or Editing Emotions
+
+All emotion data lives in `src/data/emotions.ts`. Each emotion object contains:
+
+- `greeting` — the first message EMO sends
+- `responses` — keyword-matched reply pairs `[string[], string][]`
+- `fallbacks` — random responses when no keyword matches
+- Color tokens: `bg`, `primary`, `dark`, `mid`, `surface`, `border`
+
+To add a new response, append to the `responses` array:
+
+```ts
+[['keyword1', 'keyword2'], 'The response text goes here.'],
+```
+
+---
+
+## Design Decisions
+
+- Playfair Display is used for all emotional/display text — emotion names, headlines, quotes — to give them weight and personality
+- Inter handles all UI text — labels, buttons, chat messages — for clarity and readability
+- Each emotion section uses its own light-tinted background palette so the color shift is immediately felt as you scroll
+- The chat is a modal, not an inline panel, so the scroll experience stays clean and uninterrupted
+- No icons or emojis anywhere in the UI — the design relies entirely on typography and color
+
+---
+
+## Author
+
+Built by [MNSBaanu](https://github.com/MNSBaanu)

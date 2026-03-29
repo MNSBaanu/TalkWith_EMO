@@ -61,6 +61,19 @@ export default function CinematicApp() {
         <EmotionSection key={emotion.id} emotion={emotion} index={i} />
       ))}
 
+      {/* Footer */}
+      <footer
+        className="w-full flex items-center justify-between px-8 sm:px-14 py-6"
+        style={{ borderTop: '1px solid #E2E8F0' }}
+      >
+        <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 14, color: '#0F172A' }}>
+          Talk With EMO
+        </span>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#94A3B8' }}>
+          Built by MNSBaanu
+        </span>
+      </footer>
+
       <NavDots emotions={EMOTIONS} />
     </div>
   );

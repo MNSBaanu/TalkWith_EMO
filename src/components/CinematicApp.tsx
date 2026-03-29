@@ -20,19 +20,36 @@ export default function CinematicApp() {
 
   return (
     <div className="relative bg-white">
+      {/* Header */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 sm:px-12 py-5"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 sm:px-14 py-4"
         style={{
-          background: 'rgba(255,255,255,0.88)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid #F1F5F9',
+          background: 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: '1px solid #E2E8F0',
         }}
       >
-        <span className="font-black text-slate-800 text-sm tracking-[0.25em] uppercase">
-          Emotion Universe
+        {/* Brand */}
+        <span className="font-black text-slate-900 text-sm tracking-tight">
+          Talk With EMO
         </span>
+
+        {/* Emotion nav — text only */}
+        <nav className="hidden sm:flex items-center gap-6">
+          {EMOTIONS.map(e => (
+            <button
+              key={e.id}
+              onClick={() => document.getElementById(`emotion-${e.id}`)?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-xs font-semibold tracking-widest uppercase transition-colors duration-200 hover:opacity-60"
+              style={{ color: e.primary, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
+              {e.name}
+            </button>
+          ))}
+        </nav>
+
         <span className="text-xs font-medium tracking-[0.2em] uppercase text-slate-400">
-          Inside Out
+          Emotional Intelligence
         </span>
       </header>
 

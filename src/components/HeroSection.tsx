@@ -15,9 +15,7 @@ export default function HeroSection() {
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
     const ctx = gsap.context(() => {
-      // Parallax layers on hero scroll
       gsap.to(bgRef.current, {
         yPercent: -20, ease: 'none',
         scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true },
@@ -30,25 +28,21 @@ export default function HeroSection() {
         yPercent: -70, ease: 'none',
         scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true },
       });
-      // Text drifts up as you scroll away
       gsap.to([headlineRef.current, subRef.current, pillsRef.current], {
-        yPercent: -30, opacity: 0, ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: '60% top', scrub: true },
+        yPercent: -28, opacity: 0, ease: 'none',
+        scrollTrigger: { trigger: section, start: 'top top', end: '55% top', scrub: true },
       });
-
-      // Entrance animations
-      const tl = gsap.timeline({ delay: 0.2 });
+      const tl = gsap.timeline({ delay: 0.3 });
       tl.fromTo(headlineRef.current,
         { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease: 'power4.out' })
         .fromTo(subRef.current,
           { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.6')
         .fromTo(pillsRef.current ? Array.from(pillsRef.current.children) : [],
-          { y: 20, opacity: 0, scale: 0.9 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.08, ease: 'back.out(1.5)' }, '-=0.5')
+          { y: 20, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.08, ease: 'back.out(1.4)' }, '-=0.5')
         .fromTo(scrollRef.current,
           { opacity: 0 }, { opacity: 1, duration: 0.6 }, '-=0.2');
     }, section);
-
     return () => ctx.revert();
   }, []);
 
@@ -57,104 +51,84 @@ export default function HeroSection() {
       ref={sectionRef}
       id="hero"
       className="relative w-full overflow-hidden"
-      style={{ height: '100vh', minHeight: 640, backgroundColor: '#FFFFFF' }}
+      style={{ height: '100vh', minHeight: 640, background: '#FFFFFF' }}
     >
-      {/* ── BG LAYER: large soft color blobs ── */}
+      {/* BG layer — large soft tinted circles */}
       <div ref={bgRef} className="absolute inset-0 pointer-events-none"
         style={{ willChange: 'transform', height: '130%', top: '-15%' }}>
-        {/* One blob per emotion color — arranged in a row */}
         {EMOTIONS.map((e, i) => (
           <div key={e.id} style={{
             position: 'absolute',
-            width: 340, height: 340,
-            borderRadius: '50%',
-            background: e.light,
-            opacity: 0.55,
-            left: `${8 + i * 20}%`,
-            top: `${30 + (i % 2) * 20}%`,
-            transform: 'translate(-50%, -50%)',
+            width: 400, height: 400, borderRadius: '50%',
+            background: e.surface, opacity: 0.8,
+            left: `${4 + i * 19}%`, top: `${22 + (i % 2) * 24}%`,
+            transform: 'translate(-50%,-50%)',
           }} />
         ))}
       </div>
 
-      {/* ── MID LAYER: medium rings ── */}
+      {/* MID layer — rings */}
       <div ref={midRef} className="absolute inset-0 pointer-events-none"
         style={{ willChange: 'transform', height: '150%', top: '-25%' }}>
         {EMOTIONS.map((e, i) => (
           <div key={e.id} style={{
             position: 'absolute',
-            width: 180, height: 180,
-            borderRadius: '50%',
-            border: `3px solid ${e.primary}`,
-            opacity: 0.2,
-            left: `${15 + i * 18}%`,
-            top: `${20 + (i % 3) * 25}%`,
-            transform: 'translate(-50%, -50%)',
+            width: 200, height: 200, borderRadius: '50%',
+            border: `1.5px solid ${e.border}`,
+            left: `${10 + i * 18}%`, top: `${16 + (i % 3) * 22}%`,
+            transform: 'translate(-50%,-50%)',
           }} />
         ))}
-        {/* Extra accent circles */}
-        <div style={{ position:'absolute', right:'5%', top:'15%', width:120, height:120, borderRadius:'50%', background:'#F59E0B', opacity:0.12 }} />
-        <div style={{ position:'absolute', left:'3%', bottom:'20%', width:90, height:90, borderRadius:'50%', background:'#3B82F6', opacity:0.12 }} />
       </div>
 
-      {/* ── FG LAYER: small solid dots ── */}
+      {/* FG layer — small dots */}
       <div ref={fgRef} className="absolute inset-0 pointer-events-none"
         style={{ willChange: 'transform', height: '170%', top: '-35%' }}>
         {EMOTIONS.flatMap((e, ei) =>
-          [0,1,2].map(j => (
+          [0, 1, 2].map(j => (
             <div key={`${e.id}-${j}`} style={{
               position: 'absolute',
-              width: 10 + j * 4, height: 10 + j * 4,
-              borderRadius: '50%',
-              background: e.primary,
-              opacity: 0.25,
-              left: `${10 + ei * 18 + j * 5}%`,
-              top: `${15 + j * 25 + (ei % 2) * 10}%`,
-              transform: 'translate(-50%, -50%)',
+              width: 8 + j * 4, height: 8 + j * 4, borderRadius: '50%',
+              background: e.primary, opacity: 0.18,
+              left: `${7 + ei * 18 + j * 4}%`,
+              top: `${10 + j * 22 + (ei % 2) * 8}%`,
+              transform: 'translate(-50%,-50%)',
             }} />
           ))
         )}
       </div>
 
-      {/* ── HERO TEXT ── */}
+      {/* Hero text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-center px-6">
+        <p className="text-xs font-semibold tracking-[0.3em] uppercase text-slate-400 mb-6">
+          Emotional Intelligence Platform
+        </p>
 
         <h1
           ref={headlineRef}
           className="font-black tracking-tight leading-none"
-          style={{ fontSize: 'clamp(52px, 10vw, 120px)', color: '#0F172A', marginBottom: 24 }}
+          style={{ fontSize: 'clamp(48px, 9vw, 108px)', color: '#0F172A', marginBottom: 20 }}
         >
-          Emotion
-          <br />
-          <span style={{ color: '#F59E0B' }}>Universe</span>
+          Talk With <span style={{ color: '#D97706' }}>EMO</span>
         </h1>
 
         <p
           ref={subRef}
-          className="font-light leading-relaxed"
-          style={{
-            fontSize: 'clamp(15px, 2vw, 22px)',
-            color: '#475569',
-            maxWidth: 520,
-            marginBottom: 40,
-          }}
+          className="leading-relaxed font-light"
+          style={{ fontSize: 'clamp(15px, 1.7vw, 20px)', color: '#64748B', maxWidth: 480, marginBottom: 44 }}
         >
-          A cinematic journey through the five core emotions that make us human.
-          Scroll to explore each world.
+          Express yourself to an emotion that truly understands.
+          Each EMO is here to listen, reflect, and respond.
         </p>
 
-        {/* Emotion pills */}
+        {/* Emotion pills — text only, no icons */}
         <div ref={pillsRef} className="flex flex-wrap gap-3 justify-center">
           {EMOTIONS.map(e => (
             <button
               key={e.id}
               onClick={() => document.getElementById(`emotion-${e.id}`)?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-5 py-2 rounded-full font-semibold text-sm tracking-wide transition-all duration-200 hover:scale-105 active:scale-95"
-              style={{
-                background: e.light,
-                color: e.dark,
-                border: `2px solid ${e.primary}`,
-              }}
+              className="px-6 py-2.5 rounded-full font-semibold text-sm tracking-wide transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{ background: e.surface, color: e.dark, border: `1.5px solid ${e.border}` }}
             >
               {e.name}
             </button>
@@ -164,15 +138,14 @@ export default function HeroSection() {
 
       {/* Scroll indicator */}
       <div ref={scrollRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
-        <span className="text-xs font-semibold tracking-[0.3em] uppercase text-slate-400">Scroll</span>
-        {/* Animated scroll line */}
-        <div className="relative w-px h-12 bg-slate-200 overflow-hidden">
+        <span className="text-xs font-medium tracking-[0.25em] uppercase text-slate-300">Scroll</span>
+        <div className="relative w-px h-10 overflow-hidden bg-slate-200">
           <div className="absolute top-0 left-0 w-full bg-slate-400 animate-scrollLine" style={{ height: '40%' }} />
         </div>
       </div>
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
+      <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
         style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }} />
     </section>
   );

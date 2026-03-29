@@ -71,8 +71,7 @@ export default function NavDots({ emotions }: Props) {
               width: active === i ? 10 : 6,
               height: active === i ? 10 : 6,
               background: active === i ? e.primary : `${e.primary}55`,
-            }} />
-        </button>
+            }} />        </button>
       ))}
     </nav>
   );

@@ -2,23 +2,72 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Emotion } from '../data/emotions';
-import {
-  JoyDecorations, SadnessDecorations,
-  AngerDecorations, FearDecorations, DisgustDecorations,
-} from './EmotionDecorations';
+import EmoChat from './EmoChat';
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface Props { emotion: Emotion; index: number; }
 
-function Decorations({ emotion, layer }: { emotion: Emotion; layer: 0|1|2 }) {
-  const p = { color: emotion.primary, light: emotion.light, layer };
-  if (emotion.id === 'joy')     return <JoyDecorations {...p} />;
-  if (emotion.id === 'sadness') return <SadnessDecorations {...p} />;
-  if (emotion.id === 'anger')   return <AngerDecorations {...p} />;
-  if (emotion.id === 'fear')    return <FearDecorations {...p} />;
-  if (emotion.id === 'disgust') return <DisgustDecorations {...p} />;
-  return null;
+// Parallax background — clean geometric shapes only, no icons or emojis
+function ParallaxBg({ emotion }: { emotion: Emotion }) {
+  return (
+    <>
+      {/* Large soft circle — background depth */}
+      <div style={{
+        position: 'absolute', right: '-8%', top: '5%',
+        width: 520, height: 520, borderRadius: '50%',
+        background: emotion.surface, opacity: 0.7,
+      }} />
+      {/* Medium ring */}
+      <div style={{
+        position: 'absolute', left: '8%', bottom: '10%',
+        width: 280, height: 280, borderRadius: '50%',
+        border: `1.5px solid ${emotion.border}`,
+      }} />
+    </>
+  );
+}
+
+function ParallaxMid({ emotion }: { emotion: Emotion }) {
+  return (
+    <>
+      {/* Accent ring */}
+      <div style={{
+        position: 'absolute', right: '12%', top: '30%',
+        width: 180, height: 180, borderRadius: '50%',
+        border: `1.5px solid ${emotion.border}`,
+      }} />
+      {/* Small filled circle */}
+      <div style={{
+        position: 'absolute', left: '20%', top: '25%',
+        width: 60, height: 60, borderRadius: '50%',
+        background: emotion.surface,
+      }} />
+      {/* Horizontal rule */}
+      <div style={{
+        position: 'absolute', left: '5%', top: '60%',
+        width: '30%', height: 1,
+        background: emotion.border,
+      }} />
+    </>
+  );
+}
+
+function ParallaxFg({ emotion }: { emotion: Emotion }) {
+  return (
+    <>
+      {/* Small dots — scattered */}
+      {[[15, 20], [82, 38], [45, 72], [68, 18], [30, 82], [55, 48]].map(([x, y], i) => (
+        <div key={i} style={{
+          position: 'absolute', left: `${x}%`, top: `${y}%`,
+          width: 6 + (i % 3) * 3, height: 6 + (i % 3) * 3,
+          borderRadius: '50%', background: emotion.primary,
+          opacity: 0.15 + (i % 3) * 0.05,
+          transform: 'translate(-50%,-50%)',
+        }} />
+      ))}
+    </>
+  );
 }
 
 export default function EmotionSection({ emotion, index }: Props) {
@@ -26,57 +75,45 @@ export default function EmotionSection({ emotion, index }: Props) {
   const bgRef      = useRef<HTMLDivElement>(null);
   const midRef     = useRef<HTMLDivElement>(null);
   const fgRef      = useRef<HTMLDivElement>(null);
-  const textRef    = useRef<HTMLDivElement>(null);
-  const numRef     = useRef<HTMLSpanElement>(null);
   const lineRef    = useRef<HTMLDivElement>(null);
   const titleRef   = useRef<HTMLHeadingElement>(null);
   const subRef     = useRef<HTMLParagraphElement>(null);
   const quoteRef   = useRef<HTMLParagraphElement>(null);
+  const chatRef    = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
     const ctx = gsap.context(() => {
-      // ── PARALLAX: bg slowest ──────────────────────────────────────
+      // 3-layer parallax — scrub ties directly to scroll position
       gsap.to(bgRef.current, {
         yPercent: -18, ease: 'none',
         scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
       });
-      // ── PARALLAX: mid medium ──────────────────────────────────────
       gsap.to(midRef.current, {
-        yPercent: -42, ease: 'none',
+        yPercent: -40, ease: 'none',
         scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
       });
-      // ── PARALLAX: fg fastest ──────────────────────────────────────
       gsap.to(fgRef.current, {
-        yPercent: -72, ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
-      });
-      // ── TEXT drifts up slightly ───────────────────────────────────
-      gsap.to(textRef.current, {
-        yPercent: -10, ease: 'none',
+        yPercent: -65, ease: 'none',
         scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
       });
 
-      // ── REVEAL animations ─────────────────────────────────────────
+      // Reveal on scroll into view
       const st = { trigger: section, start: 'top 78%', toggleActions: 'play none none reverse' };
-
-      gsap.fromTo(numRef.current,
-        { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration: 1, ease: 'power3.out', scrollTrigger: st });
-
       gsap.fromTo(lineRef.current,
         { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 0.7, ease: 'power3.out', delay: 0.15, scrollTrigger: st });
-
+        { scaleX: 1, duration: 0.6, ease: 'power3.out', scrollTrigger: st });
       gsap.fromTo(titleRef.current,
-        { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power4.out', delay: 0.1, scrollTrigger: st });
-
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, ease: 'power4.out', delay: 0.1, scrollTrigger: st });
       gsap.fromTo([subRef.current, quoteRef.current],
-        { y: 28, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', stagger: 0.14, delay: 0.3, scrollTrigger: st });
+        { y: 22, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.75, stagger: 0.1, ease: 'power3.out', delay: 0.22, scrollTrigger: st });
+      gsap.fromTo(chatRef.current,
+        { x: 50, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.85, ease: 'power3.out', delay: 0.18, scrollTrigger: st });
     }, section);
-
     return () => ctx.revert();
   }, [emotion.id]);
 
@@ -85,97 +122,85 @@ export default function EmotionSection({ emotion, index }: Props) {
       ref={sectionRef}
       id={`emotion-${emotion.id}`}
       className="relative w-full overflow-hidden"
-      style={{ height: '100vh', minHeight: 600, backgroundColor: emotion.bg }}
+      style={{ minHeight: '100vh', backgroundColor: emotion.bg }}
     >
-      {/* ── LAYER 0: Background — slowest ── */}
+      {/* Layer 0 — background, slowest */}
       <div ref={bgRef} className="absolute inset-0 pointer-events-none"
         style={{ willChange: 'transform', height: '130%', top: '-15%' }}>
-        <Decorations emotion={emotion} layer={0} />
+        <ParallaxBg emotion={emotion} />
       </div>
 
-      {/* ── LAYER 1: Midground — medium ── */}
+      {/* Layer 1 — midground */}
       <div ref={midRef} className="absolute inset-0 pointer-events-none"
         style={{ willChange: 'transform', height: '150%', top: '-25%' }}>
-        <Decorations emotion={emotion} layer={1} />
+        <ParallaxMid emotion={emotion} />
       </div>
 
-      {/* ── LAYER 2: Foreground — fastest ── */}
+      {/* Layer 2 — foreground, fastest */}
       <div ref={fgRef} className="absolute inset-0 pointer-events-none"
         style={{ willChange: 'transform', height: '170%', top: '-35%' }}>
-        <Decorations emotion={emotion} layer={2} />
+        <ParallaxFg emotion={emotion} />
       </div>
 
-      {/* Subtle bottom fade to separate sections */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-        style={{ background: `linear-gradient(to bottom, transparent, ${emotion.bg})` }} />
+      {/* Section divider */}
+      <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: emotion.border }} />
 
-      {/* ── TEXT CONTENT ── */}
-      <div ref={textRef} className="absolute inset-0 flex items-center z-20"
-        style={{ willChange: 'transform' }}>
-        <div className="px-12 sm:px-20 lg:px-32 max-w-4xl">
+      {/* Content — split layout */}
+      <div className="relative z-20 min-h-screen flex flex-col lg:flex-row items-center gap-12 px-8 sm:px-14 lg:px-20 py-28">
 
-          {/* Big faint index number */}
-          <span ref={numRef} className="block font-black select-none leading-none"
+        {/* Left — emotion identity */}
+        <div className="flex-1 flex flex-col justify-center max-w-md">
+          {/* Faint index number */}
+          <span className="block font-black select-none leading-none"
             style={{
-              fontSize: 'clamp(72px, 14vw, 160px)',
-              color: emotion.primary,
-              opacity: 0.1,
-              marginLeft: '-0.04em',
-              marginBottom: 8,
+              fontSize: 'clamp(60px, 11vw, 130px)',
+              color: emotion.primary, opacity: 0.07,
+              marginLeft: '-0.04em', lineHeight: 1,
             }}>
             {String(index + 1).padStart(2, '0')}
           </span>
 
           {/* Accent line */}
           <div ref={lineRef} style={{
-            width: 56, height: 4, background: emotion.primary,
-            borderRadius: 2, marginBottom: 20,
+            width: 40, height: 3, background: emotion.primary,
+            borderRadius: 2, marginBottom: 22, marginTop: -4,
           }} />
 
           {/* Title */}
           <h2 ref={titleRef} className="font-black leading-none tracking-tight"
-            style={{
-              fontSize: 'clamp(52px, 9vw, 112px)',
-              color: emotion.dark,
-              marginBottom: 20,
-            }}>
+            style={{ fontSize: 'clamp(40px, 6vw, 80px)', color: emotion.dark, marginBottom: 16 }}>
             {emotion.name}
           </h2>
 
           {/* Subtitle */}
-          <p ref={subRef} className="font-semibold tracking-widest uppercase"
-            style={{
-              fontSize: 'clamp(11px, 1.3vw, 15px)',
-              color: emotion.mid,
-              letterSpacing: '0.22em',
-              marginBottom: 18,
-            }}>
+          <p ref={subRef} className="font-semibold tracking-widest uppercase mb-5"
+            style={{ fontSize: 'clamp(10px, 1.1vw, 12px)', color: emotion.mid, letterSpacing: '0.2em' }}>
             {emotion.subtitle}
           </p>
 
           {/* Quote */}
           <p ref={quoteRef} className="font-light italic leading-relaxed"
-            style={{
-              fontSize: 'clamp(14px, 1.6vw, 19px)',
-              color: emotion.mid,
-              opacity: 0.75,
-              maxWidth: 460,
-            }}>
-            {emotion.quote}
+            style={{ fontSize: 'clamp(13px, 1.3vw, 16px)', color: emotion.mid, opacity: 0.8, maxWidth: 380 }}>
+            "{emotion.quote}"
           </p>
+        </div>
+
+        {/* Right — chat panel */}
+        <div ref={chatRef} className="w-full lg:w-[420px] xl:w-[460px] flex-shrink-0"
+          style={{ height: 520 }}>
+          <EmoChat emotion={emotion} />
         </div>
       </div>
 
-      {/* Section bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px"
-        style={{ background: emotion.primary, opacity: 0.15 }} />
-
-      {/* Scroll hint — first section only */}
+      {/* Scroll hint on first section */}
       {index === 0 && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
-          <span className="text-xs font-semibold tracking-[0.3em] uppercase"
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
+          <span className="text-xs font-medium tracking-[0.25em] uppercase"
             style={{ color: emotion.mid, opacity: 0.5 }}>Scroll</span>
-          <div className="w-px h-10" style={{ background: emotion.primary, opacity: 0.4 }} />
+          <div className="relative w-px h-10 overflow-hidden" style={{ background: emotion.border }}>
+            <div className="absolute top-0 left-0 w-full animate-scrollLine"
+              style={{ height: '40%', background: emotion.primary }} />
+          </div>
         </div>
       )}
     </section>

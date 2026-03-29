@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
 *, *::before, *::after { box-sizing: border-box; }
-
-html { scroll-behavior: auto; } /* Lenis handles smooth scroll */
+html { scroll-behavior: auto; }
 
 body {
   margin: 0;
   padding: 0;
-  background: #000;
-  color: #fff;
+  background: #fff;
+  color: #0F172A;
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -16,6 +15,15 @@ body {
 
 #root { width: 100%; }
 
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+/* Scroll line animation in hero */
+@keyframes scrollLine {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(300%); }
+}
+.animate-scrollLine {
+  animation: scrollLine 1.6s ease-in-out infinite;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #F8FAFC; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }

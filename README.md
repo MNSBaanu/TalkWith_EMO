@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# Escape — Cinematic Interactive Storytelling
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A scroll-based, branching narrative web experience built with React, Tailwind CSS, and GSAP.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **TypeScript** — functional components, custom hooks
+- **Vite** — fast dev/build tooling
+- **Tailwind CSS v4** — utility-first styling with glassmorphism effects
+- **GSAP + ScrollTrigger** — cinematic scene transitions and parallax animations
+- **Lenis** — buttery smooth scrolling
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/
+│   ├── StoryEngine.tsx     # Root engine: Lenis + GSAP setup, renders Scene
+│   ├── Scene.tsx           # Renders a story node with animations
+│   ├── ParallaxLayer.tsx   # Mouse-driven parallax wrapper (bg/mid/fg depths)
+│   ├── ChoiceBox.tsx       # Animated choice buttons with environment glow
+│   ├── TypewriterText.tsx  # Character-by-character text reveal
+│   └── Particles.tsx       # Canvas particle system with mouse repulsion
+├── hooks/
+│   └── useStoryEngine.ts   # Story state: current node, history, navigation
+├── data/
+│   └── story.json          # Branching story graph (nodes + choices)
+├── types/
+│   └── story.ts            # TypeScript interfaces for story data
+└── main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Story Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Stories are defined as a JSON graph in `src/data/story.json`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```json
+{
+  "startNode": "awakening",
+  "nodes": {
+    "awakening": {
+      "id": "awakening",
+      "environment": "abstract",
+      "text": "...",
+      "choices": [
+        { "id": "next-node-id", "label": "...", "description": "...", "icon": "✦" }
+      ]
+    }
+  }
+}
 ```
+
+Each node supports:
+- `environment` — `forest` | `space` | `cyberpunk` | `abstract` (controls colors, particles, decorations)
+- `choices` — array of branching paths
+- `isEnding` — marks terminal nodes with an ending card
+
+## Environments
+
+| Environment | Palette | Vibe |
+|-------------|---------|------|
+| `abstract` | Orange / Pink / Purple | Void, dreamlike |
+| `forest` | Green / Emerald | Ancient, bioluminescent |
+| `space` | Indigo / Purple | Celestial, vast |
+| `cyberpunk` | Fuchsia / Cyan | Neon, digital |
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Adding Story Content
+
+1. Add new nodes to `src/data/story.json`
+2. Reference them in `choices[].id` of existing nodes
+3. Set `isEnding: true` on terminal nodes — no choices needed
+
+## Features
+
+- Multi-layer mouse parallax (background / midground / foreground)
+- GSAP-powered scene enter/exit transitions (fade + zoom + slide)
+- Canvas particle system with per-environment color palettes and mouse repulsion
+- Typewriter text effect with cursor blink
+- Glassmorphism UI with per-environment glow effects
+- Story history with back navigation
+- Multiple endings system
+- Lenis smooth scroll integration
+- Fully responsive (mobile + desktop)

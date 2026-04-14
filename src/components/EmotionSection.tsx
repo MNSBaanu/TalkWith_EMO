@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Emotion } from '../data/emotions';
 import ChatModal from './ChatModal';
+import joyImg from '../assets/joy.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,7 @@ export default function EmotionSection({ emotion, index }: Props) {
   const contentRef  = useRef<HTMLDivElement>(null);
   const bgLayerRef  = useRef<HTMLDivElement>(null);
   const orbRef      = useRef<HTMLDivElement>(null);
+  const joyImgRef   = useRef<HTMLImageElement>(null);
   const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
@@ -70,6 +72,15 @@ export default function EmotionSection({ emotion, index }: Props) {
         { scale: 1.06 },
         { scale: 1, ease: 'none',
           scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub: true } });
+
+      // Joy image parallax — drifts down as you scroll
+      if (emotion.id === 'joy' && joyImgRef.current) {
+        gsap.to(joyImgRef.current, {
+          y: 80,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+        });
+      }
     }, section);
     return () => ctx.revert();
   }, [emotion.id, index]);
@@ -96,6 +107,25 @@ export default function EmotionSection({ emotion, index }: Props) {
             background: `radial-gradient(circle, ${emotion.surface} 0%, transparent 70%)`,
             opacity: 0.9,
           }} />
+
+        {/* Joy character — top right, upside down */}
+        {emotion.id === 'joy' && (
+          <img
+            ref={joyImgRef}
+            src={joyImg}
+            alt="Joy"
+            style={{
+              position: 'absolute',
+              top: '-6%',
+              right: '8%',
+              width: 'clamp(320px, 36vw, 520px)',
+              transform: 'rotate(0deg)',
+              pointerEvents: 'none',
+              zIndex: 5,
+              filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12))',
+            }}
+          />
+        )}
 
         <div ref={contentRef} className="relative z-10 w-full px-8 sm:px-16 lg:px-24 py-28 max-w-3xl">
 

@@ -100,9 +100,9 @@ export default function FindEmotionSection() {
           backgroundSize: 'cover', backgroundPosition: 'center center', zIndex: 0,
         }} />
 
-        {/* Content — top right */}
-        <div className="relative flex flex-col items-end px-16 text-right"
-          style={{ zIndex: 2, paddingTop: 100, maxWidth: 560, marginLeft: 'auto' }}>
+        {/* Content — centered on mobile, top-right on desktop */}
+        <div className="relative flex flex-col items-center sm:items-end px-6 sm:px-16 text-center sm:text-right w-full sm:w-auto sm:ml-auto"
+          style={{ zIndex: 2, paddingTop: 80, paddingBottom: 80, maxWidth: 560 }}>
 
           <p style={{
             fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 11,
@@ -156,7 +156,8 @@ export default function FindEmotionSection() {
         >
           <div style={{
             background: '#FFFFFF', borderRadius: 24, width: '100%', maxWidth: 520,
-            padding: '40px 40px 36px', boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
+            padding: 'clamp(24px, 5vw, 40px)', boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
+            position: 'relative',
           }}>
             {!result ? (
               <>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,6 +12,8 @@ import NavDots from './NavDots';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CinematicApp() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.4, smoothWheel: true });
     lenis.on('scroll', ScrollTrigger.update);
@@ -37,7 +39,7 @@ export default function CinematicApp() {
           Talk With EMO
         </span>
 
-        {/* Emotion nav — text only */}
+        {/* Emotion nav — desktop */}
         <nav className="hidden sm:flex items-center gap-6">
           <button
             onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
@@ -57,7 +59,37 @@ export default function CinematicApp() {
             </button>
           ))}
         </nav>
+
+        {/* Hamburger — mobile only */}
+        <button
+          className="sm:hidden flex flex-col gap-1.5 p-1"
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label="Menu"
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        >
+          <span style={{ display: 'block', width: 22, height: 2, background: '#0F172A', borderRadius: 2, transition: 'all 0.2s', transform: menuOpen ? 'rotate(45deg) translate(3px, 3px)' : 'none' }} />
+          <span style={{ display: 'block', width: 22, height: 2, background: '#0F172A', borderRadius: 2, transition: 'all 0.2s', opacity: menuOpen ? 0 : 1 }} />
+          <span style={{ display: 'block', width: 22, height: 2, background: '#0F172A', borderRadius: 2, transition: 'all 0.2s', transform: menuOpen ? 'rotate(-45deg) translate(3px, -3px)' : 'none' }} />
+        </button>
       </header>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen && (
+        <div className="sm:hidden fixed top-[57px] left-0 right-0 z-40 flex flex-col py-4 px-6 gap-4"
+          style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(16px)', borderBottom: '1px solid #E2E8F0' }}>
+          <button onClick={() => { document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}
+            style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#64748B', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '4px 0' }}>
+            Home
+          </button>
+          {EMOTIONS.map(e => (
+            <button key={e.id}
+              onClick={() => { document.getElementById(`emotion-${e.id}`)?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}
+              style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: e.primary, background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '4px 0' }}>
+              {e.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       <HeroSection />
       <MeetSection />

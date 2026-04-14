@@ -6,6 +6,7 @@ import ChatModal from './ChatModal';
 import joyImg from '../assets/joy.png';
 import sadImg from '../assets/sad.png';
 import angerImg from '../assets/anger.png';
+import fearImg from '../assets/Fear.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,6 +26,7 @@ export default function EmotionSection({ emotion, index }: Props) {
   const joyImgRef   = useRef<HTMLImageElement>(null);
   const sadImgRef   = useRef<HTMLImageElement>(null);
   const angerImgRef = useRef<HTMLImageElement>(null);
+  const fearImgRef  = useRef<HTMLImageElement>(null);
   const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
@@ -101,6 +103,14 @@ export default function EmotionSection({ emotion, index }: Props) {
           scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
         });
       }
+
+      if (emotion.id === 'fear' && fearImgRef.current) {
+        gsap.to(fearImgRef.current, {
+          y: -50,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+        });
+      }
     }, section);
     return () => ctx.revert();
   }, [emotion.id, index]);
@@ -165,7 +175,26 @@ export default function EmotionSection({ emotion, index }: Props) {
           />
         )}
 
-        {/* Anger character — bottom left attached */}
+        {/* Fear character — bottom right attached */}
+        {emotion.id === 'fear' && (
+          <img
+            ref={fearImgRef}
+            src={fearImg}
+            alt="Fear"
+            style={{
+              position: 'absolute',
+              bottom: '-8%',
+              right: '5%',
+              width: 'clamp(380px, 42vw, 600px)',
+              display: 'block',
+              pointerEvents: 'none',
+              zIndex: 5,
+              filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12))',
+              objectFit: 'contain',
+              objectPosition: 'bottom',
+            }}
+          />
+        )}
         {emotion.id === 'anger' && (
           <img
             ref={angerImgRef}

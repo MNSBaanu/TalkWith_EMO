@@ -8,12 +8,9 @@ Built with React, TypeScript, GSAP, Tailwind CSS, and Lenis.
 
 ## What It Does
 
-Scroll through a cinematic, parallax-driven experience across six sections:
+Users scroll through five emotion sections — Joy, Sadness, Anger, Fear, and Disgust. Each section presents the emotion with a quote and description. A "Talk to [Emotion] EMO" button opens a chat modal where the user can express themselves and receive responses tailored to that emotion's personality.
 
-- **Hero** — Split layout with the full cast of characters and a direct CTA to start exploring
-- **Meet the Emotions** — Full-screen cinematic intro with the group scene and a bold headline
-- **Five Emotion Sections** — Joy, Sadness, Anger, Fear, and Disgust each get their own full-viewport section with character art, parallax animations, a quote, and a chat button
-- **Find Your Emotion** — A closing section with a 3-question quiz that identifies which emotion best matches how you feel right now, then routes you directly to that EMO's chat
+The hero section asks "What are you feeling right now?" and presents all five emotions as CTA cards, letting users jump directly to the one that resonates.
 
 ---
 
@@ -24,10 +21,11 @@ Scroll through a cinematic, parallax-driven experience across six sections:
 | React 19 + TypeScript | Component architecture, type safety |
 | Vite | Build tooling and dev server |
 | Tailwind CSS v4 | Utility-first styling |
-| GSAP + ScrollTrigger | Parallax and scroll-based reveal animations |
+| GSAP + ScrollTrigger | Scroll-based reveal animations |
 | Lenis | Smooth scroll |
-| Sora | Display / headline font |
-| DM Sans | UI / body / chat font |
+| Playfair Display | Display / headline font |
+| Inter | UI / body font |
+| Cormorant Garamond | CTA accent font |
 
 ---
 
@@ -36,26 +34,15 @@ Scroll through a cinematic, parallax-driven experience across six sections:
 ```
 src/
 ├── components/
-│   ├── CinematicApp.tsx        # Root layout — header, Lenis setup, section order
-│   ├── HeroSection.tsx         # Split hero — characters right, text left, parallax bg
-│   ├── MeetSection.tsx         # Cinematic intro section with group scene
-│   ├── EmotionSection.tsx      # Individual emotion sections with character art + parallax
-│   ├── FindEmotionSection.tsx  # Closing section with 3-question emotion quiz modal
-│   ├── ChatModal.tsx           # Chat overlay triggered by Talk button
-│   └── NavDots.tsx             # Fixed side navigation dots
-├── assets/
-│   ├── Hero.png                # Hero cast image
-│   ├── joy.png                 # Joy character
-│   ├── sad.png                 # Sadness character
-│   ├── anger.png               # Anger character
-│   ├── Fear.png                # Fear character
-│   ├── Disgust.png             # Disgust character
-│   ├── emotions-group.jpg      # Group scene for Meet section
-│   └── emotions-stripe.jpg     # Colorful strip for Find Emotion section
+│   ├── CinematicApp.tsx      # Root layout — header, Lenis setup, section list
+│   ├── HeroSection.tsx       # Landing section with CTA emotion cards
+│   ├── EmotionSection.tsx    # Individual emotion section with scroll reveal
+│   ├── ChatModal.tsx         # Chat overlay triggered by the Talk button
+│   └── NavDots.tsx           # Fixed side navigation dots
 ├── data/
-│   └── emotions.ts             # All emotion data — colors, responses, greetings
+│   └── emotions.ts           # All emotion data — colors, responses, greetings
 ├── hooks/
-│   └── useEmoChat.ts           # Chat state — messages, send, typing, reset
+│   └── useEmoChat.ts         # Chat state — messages, send, typing, reset
 └── main.tsx
 ```
 
@@ -90,14 +77,6 @@ npm run build
 
 ---
 
-## Emotion Quiz
-
-The "Find Your Emotion" section includes a 3-question quiz. Each answer carries weighted scores across all five emotions. After all three questions, the highest-scoring emotion is shown as the result with its quote and a direct link to start a chat.
-
-To update questions or scoring, edit the `QUESTIONS` array in `src/components/FindEmotionSection.tsx`.
-
----
-
 ## Adding or Editing Emotions
 
 All emotion data lives in `src/data/emotions.ts`. Each emotion object contains:
@@ -117,12 +96,11 @@ To add a new response, append to the `responses` array:
 
 ## Design Decisions
 
-- **Sora** is used for all headlines, emotion names, and display text — geometric, bold, modern
-- **DM Sans** handles all UI text, body copy, and chat messages — clean and confident at small sizes
+- Playfair Display is used for all emotional/display text — emotion names, headlines, quotes — to give them weight and personality
+- Inter handles all UI text — labels, buttons, chat messages — for clarity and readability
 - Each emotion section uses its own light-tinted background palette so the color shift is immediately felt as you scroll
-- Character images are positioned with parallax — some top, some bottom, alternating left/right per emotion
-- The chat is a modal overlay so the scroll experience stays clean and uninterrupted
-- No icons or emojis in the UI — the design relies entirely on typography, color, and character art
+- The chat is a modal, not an inline panel, so the scroll experience stays clean and uninterrupted
+- No icons or emojis anywhere in the UI — the design relies entirely on typography and color
 
 ---
 

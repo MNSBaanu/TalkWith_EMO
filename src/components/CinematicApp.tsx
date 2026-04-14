@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { EMOTIONS } from '../data/emotions';
 import HeroSection from './HeroSection';
 import EmotionSection from './EmotionSection';
+import MeetSection from './MeetSection';
+import FindEmotionSection from './FindEmotionSection';
 import NavDots from './NavDots';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -58,10 +60,13 @@ export default function CinematicApp() {
       </header>
 
       <HeroSection />
+      <MeetSection />
 
       {EMOTIONS.map((emotion, i) => (
         <EmotionSection key={emotion.id} emotion={emotion} index={i} />
       ))}
+
+      <FindEmotionSection />
 
       {/* Footer */}
       <footer

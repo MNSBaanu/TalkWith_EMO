@@ -4,7 +4,6 @@
 
 **Live →** [mnsbaanu.github.io/TalkWith_EMO](https://mnsbaanu.github.io/TalkWith_EMO/)
 
----
 
 ## Overview
 
@@ -12,7 +11,6 @@ Talk With EMO is a cinematic, scroll-driven web experience built around the five
 
 Users scroll through immersive parallax sections, discover which emotion resonates with them, and open a real-time chat with that EMO.
 
----
 
 ## Features
 
@@ -23,13 +21,11 @@ Users scroll through immersive parallax sections, discover which emotion resonat
 - Fully responsive layout with split hero, character imagery, and animated transitions
 - Deployed via GitHub Actions to GitHub Pages
 
----
 
 ## Tech Stack
 
 React 19 · TypeScript · Vite · Tailwind CSS v4 · GSAP · Lenis · Sora · DM Sans
 
----
 
 ## Getting Started
 
@@ -47,11 +43,6 @@ npm run build
 # Deploy to GitHub Pages
 npm run deploy
 ```
-
----
-
-
----
 
 ## Collaboration
 
@@ -73,12 +64,9 @@ git push origin feature/your-feature-name
 
 All PRs are reviewed personally. Please keep changes focused and describe your intent clearly.
 
----
 
 ## License
 
-MIT — free to use, modify, and build on.
-
----
+MIT - free to use, modify, and build on.
 
 Built by [MNSBaanu](https://github.com/MNSBaanu)

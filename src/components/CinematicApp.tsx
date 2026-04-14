@@ -37,22 +37,24 @@ export default function CinematicApp() {
 
         {/* Emotion nav — text only */}
         <nav className="hidden sm:flex items-center gap-6">
+          <button
+            onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-xs font-semibold tracking-widest uppercase transition-colors duration-200 hover:opacity-60"
+            style={{ color: '#64748B', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: "'DM Sans', sans-serif" }}
+          >
+            Home
+          </button>
           {EMOTIONS.map(e => (
             <button
               key={e.id}
               onClick={() => document.getElementById(`emotion-${e.id}`)?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-semibold tracking-widest uppercase transition-colors duration-200 hover:opacity-60"
-              style={{ color: e.primary, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              style={{ color: e.primary, background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: "'DM Sans', sans-serif" }}
             >
               {e.name}
             </button>
           ))}
         </nav>
-
-        <span className="text-xs font-medium tracking-[0.2em] uppercase text-slate-400"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Emotional Intelligence
-        </span>
       </header>
 
       <HeroSection />

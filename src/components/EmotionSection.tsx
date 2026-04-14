@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Emotion } from '../data/emotions';
 import ChatModal from './ChatModal';
 import joyImg from '../assets/joy.png';
+import sadImg from '../assets/sad.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +22,7 @@ export default function EmotionSection({ emotion, index }: Props) {
   const bgLayerRef  = useRef<HTMLDivElement>(null);
   const orbRef      = useRef<HTMLDivElement>(null);
   const joyImgRef   = useRef<HTMLImageElement>(null);
+  const sadImgRef   = useRef<HTMLImageElement>(null);
   const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
@@ -81,6 +83,14 @@ export default function EmotionSection({ emotion, index }: Props) {
           scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
         });
       }
+
+      if (emotion.id === 'sadness' && sadImgRef.current) {
+        gsap.to(sadImgRef.current, {
+          y: -60,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+        });
+      }
     }, section);
     return () => ctx.revert();
   }, [emotion.id, index]);
@@ -108,7 +118,7 @@ export default function EmotionSection({ emotion, index }: Props) {
             opacity: 0.9,
           }} />
 
-        {/* Joy character — top right, upside down */}
+        {/* Joy character — top right */}
         {emotion.id === 'joy' && (
           <img
             ref={joyImgRef}
@@ -118,8 +128,26 @@ export default function EmotionSection({ emotion, index }: Props) {
               position: 'absolute',
               top: '-6%',
               right: '8%',
-              width: 'clamp(320px, 36vw, 520px)',
+              width: 'clamp(380px, 44vw, 620px)',
               transform: 'rotate(0deg)',
+              pointerEvents: 'none',
+              zIndex: 5,
+              filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12))',
+            }}
+          />
+        )}
+
+        {/* Sadness character — bottom right */}
+        {emotion.id === 'sadness' && (
+          <img
+            ref={sadImgRef}
+            src={sadImg}
+            alt="Sadness"
+            style={{
+              position: 'absolute',
+              bottom: '-4%',
+              right: '0',
+              width: 'clamp(360px, 42vw, 580px)',
               pointerEvents: 'none',
               zIndex: 5,
               filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12))',

@@ -1,69 +1,50 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { EMOTIONS } from '../data/emotions';
+import heroBg from '../assets/Hero.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
   const sectionRef  = useRef<HTMLElement>(null);
+  const imgRef      = useRef<HTMLDivElement>(null);
+  const contentRef  = useRef<HTMLDivElement>(null);
+  const tagRef      = useRef<HTMLParagraphElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subRef      = useRef<HTMLParagraphElement>(null);
-  const pillsRef    = useRef<HTMLDivElement>(null);
+  const ctaRef      = useRef<HTMLButtonElement>(null);
   const scrollRef   = useRef<HTMLDivElement>(null);
-  const tagRef      = useRef<HTMLParagraphElement>(null);
-  const contentRef  = useRef<HTMLDivElement>(null);
-  const orb1Ref     = useRef<HTMLDivElement>(null);
-  const orb2Ref     = useRef<HTMLDivElement>(null);
-  const orb3Ref     = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Entrance animation
-    const tl = gsap.timeline({ delay: 0.2 });
-    tl.fromTo(tagRef.current,
-      { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' })
+    const tl = gsap.timeline({ delay: 0.3 });
+    tl.fromTo(imgRef.current,
+        { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+      .fromTo(tagRef.current,
+        { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, '-=0.6')
       .fromTo(headlineRef.current,
-        { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power4.out' }, '-=0.4')
+        { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power4.out' }, '-=0.4')
       .fromTo(subRef.current,
-        { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.5')
-      .fromTo(pillsRef.current ? Array.from(pillsRef.current.children) : [],
-        { y: 16, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: 'power2.out' }, '-=0.4')
+        { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+      .fromTo(ctaRef.current,
+        { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, '-=0.3')
       .fromTo(scrollRef.current,
         { opacity: 0 }, { opacity: 1, duration: 0.5 }, '-=0.2');
 
-    // Parallax — content drifts up as you scroll out
     const ctx = gsap.context(() => {
-      const section = sectionRef.current;
-
+      gsap.to(imgRef.current, {
+        y: -60,
+        ease: 'none',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: true },
+      });
       gsap.to(contentRef.current, {
-        y: -120,
+        y: -40,
         ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true },
+        scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: true },
       });
-
-      // Orbs move at different speeds for depth
-      gsap.to(orb1Ref.current, {
-        y: -200, x: 40,
-        ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 1.5 },
-      });
-      gsap.to(orb2Ref.current, {
-        y: -120, x: -30,
-        ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 2 },
-      });
-      gsap.to(orb3Ref.current, {
-        y: -80,
-        ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.8 },
-      });
-
-      // Fade out hero as next section approaches
-      gsap.to(section, {
+      gsap.to(sectionRef.current, {
         opacity: 0,
         ease: 'none',
-        scrollTrigger: { trigger: section, start: '60% top', end: 'bottom top', scrub: true },
+        scrollTrigger: { trigger: sectionRef.current, start: '65% top', end: 'bottom top', scrub: true },
       });
     }, sectionRef);
 
@@ -74,51 +55,116 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full flex flex-col items-center justify-center text-center overflow-hidden"
-      style={{ height: '100vh', minHeight: 600, background: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}
+      className="relative w-full overflow-hidden"
+      style={{ height: '100vh', minHeight: 640, background: '#b8c8d8', paddingTop: 72 }}
     >
-      {/* Parallax background orbs */}
-      <div ref={orb1Ref} className="absolute pointer-events-none"
-        style={{ width: 500, height: 500, borderRadius: '50%', top: '-10%', right: '-8%',
-          background: 'radial-gradient(circle, #FEF3C7 0%, transparent 70%)', opacity: 0.7 }} />
-      <div ref={orb2Ref} className="absolute pointer-events-none"
-        style={{ width: 400, height: 400, borderRadius: '50%', bottom: '5%', left: '-6%',
-          background: 'radial-gradient(circle, #EFF6FF 0%, transparent 70%)', opacity: 0.8 }} />
-      <div ref={orb3Ref} className="absolute pointer-events-none"
-        style={{ width: 300, height: 300, borderRadius: '50%', top: '30%', left: '10%',
-          background: 'radial-gradient(circle, #F5F3FF 0%, transparent 70%)', opacity: 0.5 }} />
+      <div className="w-full h-full flex items-center">
 
-      {/* Content with its own parallax layer */}
-      <div ref={contentRef} className="relative z-10 px-6 max-w-2xl mx-auto">
-        <p ref={tagRef} className="text-xs font-semibold tracking-[0.3em] uppercase text-slate-400 mb-6">
-          Emotional Intelligence Platform
-        </p>
-
-        <h1
-          ref={headlineRef}
-          className="tracking-tight leading-tight mb-5"
-          style={{ fontSize: 'clamp(44px, 8vw, 96px)', color: '#0F172A', fontFamily: "'Sora', sans-serif", fontWeight: 800 }}
+        {/* Left — image */}
+        <div
+          ref={imgRef}
+          className="flex-shrink-0 flex items-end justify-center"
+          style={{ width: '52%', height: '100%', paddingBottom: 0 }}
         >
-          Talk With <span style={{ color: '#D97706' }}>EMO</span>
-        </h1>
+          <img
+            src={heroBg}
+            alt="EMO characters"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'center bottom',
+              display: 'block',
+              transform: 'scale(1.5)',
+              transformOrigin: 'center bottom',
+            }}
+          />
+        </div>
 
-        <p
-          ref={subRef}
-          className="leading-relaxed mb-10"
-          style={{ fontSize: 'clamp(15px, 1.6vw, 19px)', color: '#64748B', maxWidth: 440, margin: '0 auto 40px', fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}
+        {/* Right — text content */}
+        <div
+          ref={contentRef}
+          className="flex flex-col items-start justify-center"
+          style={{ flex: 1, paddingLeft: 48, paddingRight: 48 }}
         >
-          Express yourself to an emotion that truly understands.
-          Scroll down and open a conversation with Joy, Sadness, Anger, Fear, or Disgust.
-        </p>
+          <p
+            ref={tagRef}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 600,
+              fontSize: 11,
+              letterSpacing: '0.32em',
+              textTransform: 'uppercase',
+              color: 'rgba(15,23,42,0.5)',
+              marginBottom: 20,
+            }}
+          >
+            Emotional Intelligence Platform
+          </p>
 
+          <h1
+            ref={headlineRef}
+            style={{
+              fontFamily: "'Sora', sans-serif",
+              fontWeight: 800,
+              fontSize: 'clamp(40px, 5vw, 80px)',
+              lineHeight: 1.05,
+              letterSpacing: '-0.03em',
+              color: '#0F172A',
+              marginBottom: 24,
+            }}
+          >
+            Talk With <span style={{ color: '#F59E0B' }}>EMO</span>
+          </h1>
 
+          <p
+            ref={subRef}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 400,
+              fontSize: 'clamp(14px, 1.4vw, 18px)',
+              lineHeight: 1.75,
+              color: 'rgba(15,23,42,0.6)',
+              maxWidth: 380,
+              marginBottom: 40,
+            }}
+          >
+            Express yourself to an emotion that truly understands.
+            Open a conversation with Joy, Sadness, Anger, Fear, or Disgust.
+          </p>
+
+          <button
+            ref={ctaRef}
+            onClick={() => document.getElementById('emotion-joy')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 700,
+              fontSize: 15,
+              letterSpacing: '0.02em',
+              color: '#FFFFFF',
+              background: '#0F172A',
+              border: 'none',
+              borderRadius: 50,
+              padding: '15px 40px',
+              cursor: 'pointer',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.28)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)'; }}
+          >
+            Start Exploring →
+          </button>
+        </div>
       </div>
 
       {/* Scroll indicator */}
-      <div ref={scrollRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-        <span className="text-xs font-medium tracking-[0.25em] uppercase text-slate-300">Scroll</span>
-        <div className="relative w-px h-10 overflow-hidden bg-slate-100">
-          <div className="absolute top-0 left-0 w-full bg-slate-300 animate-scrollLine" style={{ height: '40%' }} />
+      <div ref={scrollRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ zIndex: 2 }}>
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(15,23,42,0.35)' }}>
+          Scroll
+        </span>
+        <div className="relative w-px h-10 overflow-hidden" style={{ background: 'rgba(15,23,42,0.15)' }}>
+          <div className="absolute top-0 left-0 w-full animate-scrollLine" style={{ height: '40%', background: 'rgba(15,23,42,0.4)' }} />
         </div>
       </div>
     </section>

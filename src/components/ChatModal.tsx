@@ -63,10 +63,10 @@ export default function ChatModal({ emotion, onClose }: Props) {
           style={{ background: emotion.surface, borderBottom: `1px solid ${emotion.border}` }}
         >
           <div>
-            <p className="font-bold text-sm" style={{ color: emotion.dark, fontFamily: "'Inter', sans-serif" }}>
+            <p className="font-bold text-sm" style={{ color: emotion.dark, fontFamily: "'DM Sans', sans-serif" }}>
               {emotion.name} — EMO
             </p>
-            <p className="text-xs mt-0.5" style={{ color: emotion.mid, opacity: 0.7, fontFamily: "'Inter', sans-serif" }}>
+            <p className="text-xs mt-0.5" style={{ color: emotion.mid, opacity: 0.7, fontFamily: "'DM Sans', sans-serif" }}>
               {typing ? 'Responding...' : 'Ready to listen'}
             </p>
           </div>
@@ -105,8 +105,8 @@ export default function ChatModal({ emotion, onClose }: Props) {
                 className="max-w-[78%] px-4 py-3 rounded-2xl text-sm leading-relaxed"
                 style={
                   msg.role === 'emo'
-                    ? { background: emotion.surface, color: emotion.dark, borderBottomLeftRadius: 4, border: `1px solid ${emotion.border}`, fontFamily: "'Inter', sans-serif" }
-                    : { background: emotion.primary, color: '#fff', borderBottomRightRadius: 4, fontFamily: "'Inter', sans-serif" }
+                    ? { background: emotion.surface, color: emotion.dark, borderBottomLeftRadius: 4, border: `1px solid ${emotion.border}`, fontFamily: "'DM Sans', sans-serif" }
+                    : { background: emotion.primary, color: '#fff', borderBottomRightRadius: 4, fontFamily: "'DM Sans', sans-serif" }
                 }
               >
                 {msg.text}

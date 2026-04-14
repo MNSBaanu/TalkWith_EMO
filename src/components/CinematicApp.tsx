@@ -31,7 +31,7 @@ export default function CinematicApp() {
       >
         {/* Brand */}
         <span className="text-slate-900 text-base tracking-tight"
-          style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
+          style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700 }}>
           Talk With EMO
         </span>
 
@@ -50,7 +50,7 @@ export default function CinematicApp() {
         </nav>
 
         <span className="text-xs font-medium tracking-[0.2em] uppercase text-slate-400"
-          style={{ fontFamily: "'Inter', sans-serif" }}>
+          style={{ fontFamily: "'DM Sans', sans-serif" }}>
           Emotional Intelligence
         </span>
       </header>
@@ -66,10 +66,10 @@ export default function CinematicApp() {
         className="w-full flex items-center justify-between px-8 sm:px-14 py-6"
         style={{ borderTop: '1px solid #E2E8F0' }}
       >
-        <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 14, color: '#0F172A' }}>
+        <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 14, color: '#0F172A' }}>
           Talk With EMO
         </span>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#94A3B8' }}>
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#94A3B8' }}>
           Built by MNSBaanu
         </span>
       </footer>

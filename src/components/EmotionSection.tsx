@@ -245,7 +245,8 @@ export default function EmotionSection({ emotion, index }: Props) {
           />
         )}
 
-        <div ref={contentRef} className="relative z-10 w-full px-8 sm:px-16 lg:px-24 py-28 max-w-3xl">
+        <div ref={contentRef} className="relative z-10 w-full px-8 sm:px-16 lg:px-24 py-28 max-w-3xl"
+          style={['joy', 'anger', 'disgust'].includes(emotion.id) ? { marginLeft: 'auto', paddingLeft: '22%' } : {}}>
 
           {/* Faint index number — has its own faster parallax */}
           <span ref={numRef} className="block select-none leading-none"
@@ -290,8 +291,8 @@ export default function EmotionSection({ emotion, index }: Props) {
           </button>
         </div>
 
-        {/* Scroll hint on first section */}
-        {index === 0 && (
+        {/* Scroll hint on joy, sadness, anger, fear sections */}
+        {['joy', 'sadness', 'anger', 'fear'].includes(emotion.id) && (
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
             <span className="text-xs font-medium tracking-[0.25em] uppercase"
               style={{ color: emotion.mid, opacity: 0.4 }}>Scroll</span>

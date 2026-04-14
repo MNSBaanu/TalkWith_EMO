@@ -28,6 +28,7 @@ Users scroll through immersive parallax sections, discover which emotion resonat
 ## Tech Stack
 
 React 19 · TypeScript · Vite · Tailwind CSS v4 · GSAP · Lenis · Sora · DM Sans
+
 ---
 
 ## Getting Started

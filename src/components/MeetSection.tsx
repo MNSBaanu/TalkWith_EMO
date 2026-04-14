@@ -65,8 +65,8 @@ export default function MeetSection() {
       />
 
       {/* Content */}
-      <div className="relative flex flex-col items-center justify-end h-full pb-20 px-6 text-center"
-        style={{ zIndex: 2, minHeight: '100vh', paddingTop: 120 }}>
+      <div className="relative flex flex-col items-center px-6 text-center"
+        style={{ zIndex: 2, paddingTop: 140, paddingBottom: 100 }}>
 
         {/* Top text */}
         <div className="flex flex-col items-center" style={{ marginBottom: 60 }}>          <h2

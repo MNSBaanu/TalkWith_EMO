@@ -7,6 +7,7 @@ import joyImg from '../assets/joy.png';
 import sadImg from '../assets/sad.png';
 import angerImg from '../assets/anger.png';
 import fearImg from '../assets/Fear.png';
+import disgustImg from '../assets/Disgust.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,7 +27,8 @@ export default function EmotionSection({ emotion, index }: Props) {
   const joyImgRef   = useRef<HTMLImageElement>(null);
   const sadImgRef   = useRef<HTMLImageElement>(null);
   const angerImgRef = useRef<HTMLImageElement>(null);
-  const fearImgRef  = useRef<HTMLImageElement>(null);
+  const fearImgRef    = useRef<HTMLImageElement>(null);
+  const disgustImgRef = useRef<HTMLImageElement>(null);
   const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
@@ -111,6 +113,14 @@ export default function EmotionSection({ emotion, index }: Props) {
           scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
         });
       }
+
+      if (emotion.id === 'disgust' && disgustImgRef.current) {
+        gsap.to(disgustImgRef.current, {
+          y: -50,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+        });
+      }
     }, section);
     return () => ctx.revert();
   }, [emotion.id, index]);
@@ -138,7 +148,7 @@ export default function EmotionSection({ emotion, index }: Props) {
             opacity: 0.9,
           }} />
 
-        {/* Joy character — top right */}
+        {/* Joy character — top left */}
         {emotion.id === 'joy' && (
           <img
             ref={joyImgRef}
@@ -147,9 +157,8 @@ export default function EmotionSection({ emotion, index }: Props) {
             style={{
               position: 'absolute',
               top: '-6%',
-              right: '8%',
+              left: '8%',
               width: 'clamp(380px, 44vw, 620px)',
-              transform: 'rotate(0deg)',
               pointerEvents: 'none',
               zIndex: 5,
               filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12))',
@@ -195,7 +204,28 @@ export default function EmotionSection({ emotion, index }: Props) {
             }}
           />
         )}
-        {emotion.id === 'anger' && (
+
+        {/* Disgust character — bottom left attached */}
+        {emotion.id === 'disgust' && (
+          <img
+            ref={disgustImgRef}
+            src={disgustImg}
+            alt="Disgust"
+            style={{
+              position: 'absolute',
+              bottom: '-8%',
+              left: '5%',
+              width: 'clamp(380px, 42vw, 600px)',
+              display: 'block',
+              pointerEvents: 'none',
+              zIndex: 5,
+              filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.12))',
+              objectFit: 'contain',
+              objectPosition: 'bottom',
+            }}
+          />
+        )}
+        {/* Anger character — bottom left attached */}        {emotion.id === 'anger' && (
           <img
             ref={angerImgRef}
             src={angerImg}
@@ -203,7 +233,7 @@ export default function EmotionSection({ emotion, index }: Props) {
             style={{
               position: 'absolute',
               bottom: '-8%',
-              right: '5%',
+              left: '5%',
               width: 'clamp(380px, 42vw, 600px)',
               display: 'block',
               pointerEvents: 'none',

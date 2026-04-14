@@ -58,9 +58,9 @@ export default function HeroSection() {
       className="relative w-full overflow-hidden"
       style={{ height: '100vh', minHeight: 640, background: '#b8c8d8', paddingTop: 72 }}
     >
-      <div className="w-full h-full flex items-center">
+      <div className="w-full h-full flex items-center flex-row-reverse">
 
-        {/* Left — image */}
+        {/* Right — image */}
         <div
           ref={imgRef}
           className="flex-shrink-0 flex items-end justify-center"
